@@ -1,0 +1,24 @@
+{
+  "name": "api-projetw",
+  "version": "1.0.0",
+  "description": "first commit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaluminium/api-projetw.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaluminium/api-projetw/issues"
+  },
+  "homepage": "https://github.com/kaluminium/api-projetw#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "express": "^4.18.2",
+    "mysql2": "^3.3.1"
+  }
+}
