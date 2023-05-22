@@ -1,37 +1,21 @@
-const Database = require('../models/database');
-const Character = require('../entities/Character');
+const CharacterRepository = require('../repositories/CharacterRepository');
 
 class CharacterController {
-    static async getCharacterById(id){
-        const db = await Database.getInstance();
-        const character = await db.query(`SELECT * FROM personnage WHERE id = ${id}`);
-        if(character.length === 0){
-            return null;
+    static async getJSONCharacter(req, res){
+        let character
+        if(req.query.id) character = await CharacterRepository.getCharacterById(req.query.id);
+        else if(req.query.name) character = await CharacterRepository.getCharacterByName(req.query.name);
+        else return res.status(400).json({
+            code : 400,
+            error: 'Requête invalide'
+        });
+        if(character === null){
+            return res.status(404).json({
+                code : 404,
+                error: 'Personnage introuvable'
+            });
         }
-        return new Character(
-            character[0].account_id,
-            character[0].id,
-            character[0].name,
-            character[0].divinity,
-            character[0].race,
-            character[0].xp,
-            character[0].sex)
-    }
-
-    static async getCharacterByName(name){
-        const db = await Database.getInstance();
-        const character = await db.query(`SELECT * FROM personnage WHERE lower(name) = '${name.toLowerCase()}'`);
-        if(character.length === 0){
-            return null;
-        }
-        return new Character(
-            character[0].account_id,
-            character[0].id,
-            character[0].name,
-            character[0].divinity,
-            character[0].race,
-            character[0].xp,
-            character[0].sex);
+        return res.status(200).json(character.toJSON())
     }
 }
 
