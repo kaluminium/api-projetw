@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const CharacterController = require('../../../controllers/CharacterController');
+const CharacterListController = require('../../../controllers/CharacterListController');
 
 router.get('/', async (req, res) => {
-    res.json({code: 400, message: 'Bad Request'})
+    res.status(400).json({code: 400, message: 'Bad Request'})
 });
 
-router.use('/get', require('./get'));
-router.use('/get_all', require('./get_all'));
+router.get('/get', async (req, res) => {
+    await CharacterController.getJSONCharacter(req, res);
+});
+
+router.get('/get_all', async (req, res) => {
+    await CharacterListController.getJSONCharacterList(req, res);
+});
 
 module.exports = router;
