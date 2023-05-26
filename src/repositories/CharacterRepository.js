@@ -1,4 +1,4 @@
-const Database = require('../models/database');
+const Database = require('../models/Database');
 const CharacterEntity = require('../entities/CharacterEntity');
 
 class CharacterRepository {
