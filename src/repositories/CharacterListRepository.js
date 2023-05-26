@@ -38,6 +38,22 @@ class CharacterListRepository {
         );
         return await this.getCharacterListWithResponse(characterList);
     }
+
+    static async getAllCharacterList(){
+        const db = await Database.getInstance();
+        const characterList = await db.query(
+            'SELECT * FROM personnage LIMIT 50'
+        );
+        return await this.getCharacterListWithResponse(characterList);
+    }
+
+    static async getAllCharacterListWithOrder(order, orderType){
+        const db = await Database.getInstance();
+        const characterList = await db.query(
+            `SELECT * FROM personnage ORDER BY ${order} ${orderType} LIMIT 50`,
+        );
+        return await this.getCharacterListWithResponse(characterList);
+    }
 }
 
 module.exports = CharacterListRepository;
