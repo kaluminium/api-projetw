@@ -14,13 +14,26 @@ class Database{
         Database.instance = this;
     }
 
-    static async getInstance(){
+    static async getInstance() {
         if (!Database.instance) {
             const instance = new Database();
-            await instance.connect();
             Database.instance = instance;
+            await instance.connect();
+        } else {
+            await Database.instance.ensureConnection();
         }
         return Database.instance;
+    }
+
+    async ensureConnection() {
+        try {
+            if (!this.#connection || this.#connection.state === 'disconnected') {
+                await this.connect();
+            }
+        } catch (error) {
+            console.error('Erreur lors de la vérification de la connexion à la base de données :', error);
+            throw error;
+        }
     }
 
     async connect(){
