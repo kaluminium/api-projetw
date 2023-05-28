@@ -19,21 +19,8 @@ class Database{
             const instance = new Database();
             Database.instance = instance;
             await instance.connect();
-        } else {
-            await Database.instance.ensureConnection();
         }
         return Database.instance;
-    }
-
-    async ensureConnection() {
-        try {
-            if (!this.#connection || this.#connection.state === 'disconnected') {
-                await this.connect();
-            }
-        } catch (error) {
-            console.error('Erreur lors de la vérification de la connexion à la base de données :', error);
-            throw error;
-        }
     }
 
     async connect(){
@@ -63,6 +50,12 @@ class Database{
 
     async query(query, values){
         try {
+            try {
+                await this.#connection.query('SELECT 1');
+            } catch (testError) {
+                console.log('La connexion à la base de données est fermée ou inactive.');
+                await this.connect();
+            }
             const [rows] = await this.#connection.query(query, values);
             return rows;
         } catch (error) {
